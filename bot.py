@@ -15,28 +15,42 @@ dp = Dispatcher()
 @dp.message(Command('start'))
 async def start_command(message: Message):
     await message.answer(
-        " Привет! Я бот-переводчик.\n Сперва рекомендую вам выбрать язык, на которого будет переведен текст.\n Cменить язык: /change"
-    )
+    "Привет! Я — бот-переводчик.\n"
+    "Чтобы начать, выбери язык, на который я буду переводить твои сообщения.\n"
+    "Для смены языка используй команду:\n"
+    "/change"
+)
 
 @dp.message(Command('change'))
 async def change_command(message: Message):
-
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(text="🇰🇿 Қазақша", callback_data="kk"),
                 InlineKeyboardButton(text="🇷🇺 Русский", callback_data="ru"),
+            ],
+            [
                 InlineKeyboardButton(text="🇬🇧 English", callback_data="en"),
+                InlineKeyboardButton(text="🇩🇪 Deutsch", callback_data="de"),
+            ],
+            [
+                InlineKeyboardButton(text="🇺🇿 O'zbekcha", callback_data="uz"),
+                InlineKeyboardButton(text="🇨🇳 中文", callback_data="zh-CN"),
+            ],
+            [
+                InlineKeyboardButton(text="🇰🇷 한국어", callback_data="ko"),
+                InlineKeyboardButton(text="🇪🇸 Español", callback_data="es"),
             ]
         ]
     )
-    await message.answer(" Выберите язык для перевода:", reply_markup=keyboard)
+    await message.answer("Выберите язык для перевода:", reply_markup=keyboard)
 
-@dp.callback_query(F.data.in_(['ru', 'en', 'kk']))
+
+@dp.callback_query(F.data.in_(['kk', 'ru', 'en', 'de', 'uz', 'zh-CN', 'ko', 'es']))
 async def set_language(callback: CallbackQuery):
     user_id = callback.from_user.id
     user_langs[user_id] = callback.data
-    await callback.message.edit_text(f"Язык установлен: {callback.data.upper()}")
+    await callback.message.edit_text(f"✅Перевод будет выполняться на: {callback.data.upper()}")
     await callback.answer()
 
 @dp.message(F.text)
