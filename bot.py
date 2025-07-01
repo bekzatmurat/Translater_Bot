@@ -4,7 +4,8 @@ from aiogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKe
 from aiogram.filters import Command
 from deep_translator import GoogleTranslator
 
-API_TOKEN = "TOKEN"
+import os
+API_TOKEN = os.getenv("BOT_TOKEN")
 
 user_langs = {}
 
