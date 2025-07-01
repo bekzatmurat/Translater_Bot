@@ -2,14 +2,13 @@
 builder = "NIXPACKS"
 
 [start]
-cmd = "python bot.py"
+cmd = "python3 bot.py"
 
 [phases.setup]
-nixPkgs = ["python312"]
+nixPkgs = ["python312", "pip"]
 
 [phases.install]
 cmds = [
-  "python -m ensurepip --upgrade",
-  "python -m pip install --upgrade pip",
-  "python -m pip install -r requirements.txt"
+  "pip install --upgrade pip",
+  "pip install -r requirements.txt"
 ]
